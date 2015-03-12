@@ -14,7 +14,6 @@ define [
     defaults: 
       deadline: new Date()
       status: 0
-      # 0: todo, 1: doing, 2: done, 3:closed
       assigned: false
 
     validate: (attrs, options) ->
@@ -25,9 +24,10 @@ define [
       response
 
 
-  class TasksCollection extends Backbone.TasksCollection
+  class TasksCollection extends Backbone.Collection
     model: TaskModel
 
-
-alert 'DEBUG'
-
+  return {
+    "TaskModel": TaskModel,
+    "TasksCollection": TasksCollection
+  }

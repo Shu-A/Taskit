@@ -14,26 +14,32 @@ require [
 ], (Backbone) ->
   Backbone.history.start()
 
-tasks = new @Models.Tasks([
-  {
-    title: 'task1',
-    deadline: new Date(),
-    status: 0
-  },
-  {
-    title: 'task2',
-    deadline: new Date(),
-    status: 1
-  },
-  {
-    title: 'task3',
-    deadline: new Date(),
-    status: 2
-  },
-])
+require [
+  'models/Task',
+  'views/Task'
+  ], (TaskModel, TaskView) ->
 
-todoTasks = new @Models.Tasks tasks.where {status:0}
-todoTasksView = new @Views.TasksView {collection: todoTasks}
-$("#todoTasks").html(todoTasksView.render().el)
+    statusList = { todo: 0, doing: 1, done: 2, closed: 3 }
 
-$("body").append(todoTasksView.render().el)
+    tasks = new TaskModel.TasksCollection([
+      {
+        title: 'task1',
+        deadline: new Date(),
+        status: statusList.todo
+      },
+      {
+        title: 'task2',
+        deadline: new Date(),
+        status: statusList.doing
+      },
+      {
+        title: 'task3',
+        deadline: new Date(),
+        status: statusList.done
+      },
+    ])
+
+    for k, v of statusList
+      tasks = new TaskModel.TasksCollection tasks.where {status: v}
+      tasksView = new TaskView.TasksView {collection: tasks}
+      $('#' + k).html(tasksView.render().el)

@@ -4,6 +4,7 @@ define [
   'backbone'
   'templates'
 ], ($, _, Backbone, JST) ->
+
   class TaskView extends Backbone.View
     template: JST['app/scripts/templates/Task.ejs']
 
@@ -20,6 +21,8 @@ define [
 
     render: () ->
         @$el.html @template(@model.toJSON())
+        return @
+
 
   class TasksView extends Backbone.View
     tagName: 'ul'
@@ -29,4 +32,9 @@ define [
         taskView = new TaskView {model: task}
         @$el.append taskView.render().el
       , this
-        
+      return @
+
+  return {
+    "TaskView": TaskView
+    "TasksView": TasksView
+  }
